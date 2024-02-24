@@ -1,0 +1,124 @@
+name: Film
+on:
+  schedule:
+    - cron: '0 0/3 * * *'
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: config
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+    - name: Install yt-dlp
+      run: |
+        sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
+        sudo chmod a+rx /usr/local/bin/yt-dlp
+
+    - name: Get FilmAtolyesi
+      run: |
+        touch ./film/filmatolyesi.m3u8
+        sudo cat >./film/filmatolyesi.m3u8 <<EOL
+        #EXTM3U
+        #EXT-X-VERSION:3
+        #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2560000
+        $(yt-dlp --print urls https://www.youtube.com/@filmatolyesi/live)
+        EOL
+
+    - name: Get KemalSunalTV
+      run: |
+        touch ./film/kemalsunaltv.m3u8
+        sudo cat >./film/kemalsunaltv.m3u8 <<EOL
+        #EXTM3U
+        #EXT-X-VERSION:3
+        #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2560000
+        $(yt-dlp --print urls https://www.youtube.com/@KemalSunalTV/live)
+        EOL
+
+    - name: Get KemalSunalFilmleri
+      run: |
+        touch ./film/kemalsunalfilmleri.m3u8
+        sudo cat >./film/kemalsunalfilmleri.m3u8 <<EOL
+        #EXTM3U
+        #EXT-X-VERSION:3
+        #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2560000
+        $(yt-dlp --print urls https://www.youtube.com/@kemalsunalfilmleri/live)
+        EOL
+
+    - name: Get KemalSunalFilmleriveSahneleri
+      run: |
+        touch ./film/kemalsunalfilmlerivesahneleri.m3u8
+        sudo cat >./film/kemalsunalfilmlerivesahneleri.m3u8 <<EOL
+        #EXTM3U
+        #EXT-X-VERSION:3
+        #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2560000
+        $(yt-dlp --print urls https://www.youtube.com/@KemalSunalFilmleriveSahneleri/live)
+        EOL
+
+    - name: Get ArzuFilm
+      run: |
+        touch ./film/arzufilm.m3u8
+        sudo cat >./film/arzufilm.m3u8 <<EOL
+        #EXTM3U
+        #EXT-X-VERSION:3
+        #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2560000
+        $(yt-dlp --print urls https://www.youtube.com/@arzufilm1964/live)
+        EOL
+
+    - name: Get GulsahFilm
+      run: |
+        touch ./film/gulsahfilm.m3u8
+        sudo cat >./film/gulsahfilm.m3u8 <<EOL
+        #EXTM3U
+        #EXT-X-VERSION:3
+        #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2560000
+        $(yt-dlp --print urls https://www.youtube.com/@GulsahFilmOfficial/live)
+        EOL
+
+    - name: Get TurkFimleriTV
+      run: |
+        touch ./film/turkfilmleri.m3u8
+        sudo cat >./film/turkfilmleri.m3u8 <<EOL
+        #EXTM3U
+        #EXT-X-VERSION:3
+        #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2560000
+        $(yt-dlp --print urls https://www.youtube.com/@TurkFilmleri-TV/live)
+        EOL
+
+    - name: Get MuratFilm
+      run: |
+        touch ./film/muratfilm.m3u8
+        sudo cat >./film/muratfilm.m3u8 <<EOL
+        #EXTM3U
+        #EXT-X-VERSION:3
+        #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2560000
+        $(yt-dlp --print urls https://www.youtube.com/@MuratFilm/live)
+        EOL
+
+    - name: Get TurkFilmleri1onMedya
+      run: |
+        touch ./film/turkfilmleri1onmedya.m3u8
+        sudo cat >./film/turkfilmleri1onmedya.m3u8 <<EOL
+        #EXTM3U
+        #EXT-X-VERSION:3
+        #EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2560000
+        $(yt-dlp --print urls https://www.youtube.com/@1onmedya/live)
+        EOL
+
+    - name: git add
+      run: |
+        git add -A
+        ls -la
+
+    - name: commit & push
+      run: |
+        git commit -m "links are updated"
+        git push
